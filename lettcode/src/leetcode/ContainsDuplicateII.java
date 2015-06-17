@@ -11,15 +11,12 @@ public class ContainsDuplicateII {
 	}
 
 	public static boolean containsNearbyDuplicate(int[] nums, int k) {
-
 		if (nums == null)
 			return false;
-
 		int len = nums.length;
-
 		if (len < 2)
 			return false;
-
+		
 		int start = 0, end = 0;
 		Map<Integer, Integer> tables = new HashMap<Integer, Integer>();
 		for (int i = 0; i < len; i++) {

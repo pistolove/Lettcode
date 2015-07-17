@@ -1,8 +1,13 @@
 package leetcode;
 
+/**
+ * 
+ * @author lqq
+ *
+ */
 public class Rectangle_Area {
-	public int computeArea(int A, int B, int C, int D, int E, int F, int G,
-			int H) {
+	
+	public int computeArea(int A, int B, int C, int D, int E, int F, int G,int H) {
 		//
 		// //相离
 		// if((E>=C || G<=A) && (H<=B || F>=D)){
@@ -39,5 +44,4 @@ public class Rectangle_Area {
 
 		return area;
 	}
-
 }

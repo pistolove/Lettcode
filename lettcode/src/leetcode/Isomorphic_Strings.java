@@ -33,12 +33,11 @@ public class Isomorphic_Strings {
 			}else{
 				_map2.get(ch2[i]).append(i);
 			}
-			
-			if(_map1.values().size()!=_map2.values().size()){
-				return false;
-			}
 		}
 		
+		if(_map1.values().size()!=_map2.values().size()){
+			return false;
+		}
 		
 		StringBuffer b1 = new StringBuffer();
 		StringBuffer b2 = new StringBuffer();

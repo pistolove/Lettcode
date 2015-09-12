@@ -2,6 +2,10 @@ package leetcode;
 
 import java.util.Stack;
 
+/**
+ * @author liqqc
+ *
+ */
 public class Implement_Queue_using_Stacks {
 
 	public Stack<Integer> _stack1 = new Stack<Integer>();

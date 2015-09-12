@@ -1,10 +1,11 @@
 package leetcode;
 
+/**
+ * 
+ * @author liqq
+ *
+ */
 public class House_Robber {
-
-	public static void main(String[] args) {
-		rob(new int[] { 1, 3, 4, 2, 7, 5, 9, 6 });
-	}
 
 	public static int rob(int[] nums) {
 

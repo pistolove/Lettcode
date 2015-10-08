@@ -4,12 +4,14 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 
+ * @author liqqc
+ *
+ */
 public class Valid_Anagram {
 
-	public static void main(String[] args) {
-		isAnagram("anagram", "nagaram");
-	}
-
+	// use api method
 	public static boolean isAnagram(String s, String t) {
 		if (s == null || t == null)
 			return false;
@@ -28,6 +30,7 @@ public class Valid_Anagram {
 		return new String(charArray).equals(new String(charArray2));
 	}
 
+	// use map
 	public static boolean isAnagram2(String s, String t) {
 		if (s == null || t == null)
 			return false;
@@ -64,4 +67,35 @@ public class Valid_Anagram {
 
 		return true;
 	}
+
+	// use array
+	public static boolean isAnagram3(String s, String t) {
+
+		if (s == null || t == null)
+			return false;
+
+		if (s.length() != t.length())
+			return false;
+
+		int[] arr = new int[256];
+
+		for (char c : s.toCharArray()) {
+			if (arr[c] == 0) {
+				arr[c] = 1;
+			} else {
+				arr[c] = arr[c] + 1;
+			}
+		}
+
+		for (char c : t.toCharArray()) {
+			if (arr[c] == 0) {
+				return false;
+			} else {
+				arr[c] = arr[c] - 1;
+			}
+		}
+
+		return true;
+	}
+
 }

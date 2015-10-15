@@ -1,5 +1,6 @@
 package others;
 
+import java.awt.image.RescaleOp;
 import java.util.Stack;
 
 // 输入1047000 输出7401
@@ -16,7 +17,6 @@ public class StackPrint {
 		for (Character c : s.toCharArray()) {
 			stack.push(c);
 		}
-
 		String result = "";
 		while(!stack.isEmpty()){
 			if(stack.peek().equals('0') && result.equals("")) {

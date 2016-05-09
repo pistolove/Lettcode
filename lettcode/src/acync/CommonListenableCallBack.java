@@ -1,4 +1,4 @@
-package acync.core;
+package acync;
 
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;

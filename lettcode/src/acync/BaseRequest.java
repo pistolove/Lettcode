@@ -1,4 +1,4 @@
-package acync.core;
+package acync;
 
 public interface BaseRequest {
     public String build();

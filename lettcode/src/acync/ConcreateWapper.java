@@ -1,4 +1,4 @@
-package acync.core;
+package acync;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +7,9 @@ import java.util.Map;
 public class ConcreateWapper {
     private List<Concreate> wrapper = new ArrayList<Concreate>();
 
-    public ConcreateWapper(IEnum baseEnum, Map<String, ?> variables, Map<BaseRequest, ?> request) {
+    public ConcreateWapper(){}
+    
+    public void setParams(IEnum baseEnum, Map<String, ?> variables, Map<BaseRequest, ?> request) {
         wrapper.add(new Concreate(baseEnum, variables, request));
     }
 

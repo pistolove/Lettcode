@@ -1,4 +1,4 @@
-package acync.core;
+package acync;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,11 +6,20 @@ import java.util.concurrent.CountDownLatch;
 
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.util.concurrent.ListenableFuture;
+import org.springframework.web.client.AsyncRestTemplate;
 
-import acync.core.ConcreateWapper.Concreate;
+import acync.ConcreateWapper.Concreate;
 
 public class FutureTpDao {
-    public static final AsynHttpClient asynHttpClient = AsynHttpClient.getInstance();
+    public AsynClientTemplete asynHttpClient;
+
+    public FutureTpDao(){
+        asynHttpClient = new AsynClientTemplete(null);
+    }
+
+    public FutureTpDao(AsyncRestTemplate tp) {
+        asynHttpClient = new AsynClientTemplete(tp);
+    }
 
     public Map<IEnum, Object> getHttpData(ConcreateWapper wapper) {
         if (wapper == null)
@@ -33,6 +42,7 @@ public class FutureTpDao {
             try {
                 latch.await();
             } catch (Exception e) {
+                throw new RuntimeException(e.getMessage());
             }
         }
         return result;

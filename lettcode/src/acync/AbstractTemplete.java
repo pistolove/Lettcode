@@ -1,4 +1,4 @@
-package acync.core;
+package acync;
 
 import java.util.Map;
 
@@ -8,25 +8,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.web.client.AsyncRestTemplate;
 
+public abstract class AbstractTemplete implements Templete{
+    public AsyncRestTemplate asyncRestTemplate;
 
-
-public class AsynHttpClient {
-
-    private AsyncRestTemplate asyncRestTemplate;
-    public AsynHttpClient(AsyncRestTemplate asyncRestTemplate) {
-        this.asyncRestTemplate = asyncRestTemplate;
-    }
-
-    public static AsynHttpClient getInstance(AsyncRestTemplate asyncRestTemplate) {
-        if(asyncRestTemplate == null) 
-            asyncRestTemplate = new AsyncRestTemplate();
-        return new AsynHttpClient(asyncRestTemplate);
-    }
-
-    public static AsynHttpClient getInstance() {
-        return new AsynHttpClient(new AsyncRestTemplate());
-    }
-
+    @Override
     public <T> ListenableFuture<ResponseEntity<T>> getAsyncForObject(BaseRequest baserequest, Class<T> responseType)
             throws Exception {
         String url = baserequest.build();
@@ -38,6 +23,7 @@ public class AsynHttpClient {
         }
     }
 
+    @Override
     public <T> ListenableFuture<ResponseEntity<T>> getAsyncForObject(BaseRequest baserequest,
             ParameterizedTypeReference<T> responseType) throws Exception {
         String url = baserequest.build();
@@ -49,6 +35,7 @@ public class AsynHttpClient {
         }
     }
 
+    @Override
     public <T> ListenableFuture<ResponseEntity<T>> getAsyncForObject(BaseRequest baserequest, Class<T> responseType,
             Map<String, ?> uriVariables) throws Exception {
         String url = baserequest.build();
@@ -61,6 +48,7 @@ public class AsynHttpClient {
         }
     }
 
+    @Override
     public <T> ListenableFuture<ResponseEntity<T>> getAsyncForObject(BaseRequest baserequest,
             ParameterizedTypeReference<T> responseType, Map<String, ?> uriVariables) throws Exception {
         String url = baserequest.build();
@@ -73,4 +61,6 @@ public class AsynHttpClient {
         }
     }
 
+    abstract void setTemplete(AsyncRestTemplate asyncRestTemplate);
+    
 }

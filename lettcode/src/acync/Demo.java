@@ -11,6 +11,8 @@ public class Demo {
         Map rq = new HashMap();
         rq.put(new UserRequest(), new UserResponse().getClass());
         wapper.setParams(UserEnum.ADD, null, rq);
+        wapper.setParams(UserEnum.DELETE, null, rq);
+        wapper.setParams(UserEnum.UPDATE, null, rq);
         
         FutureTpDao ft = new FutureTpDao();
         Map<IEnum, Object> userData = ft.getHttpData(wapper);

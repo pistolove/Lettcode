@@ -1,5 +1,5 @@
 package acync;
 
-public class UserResponse {
-
+public class UserResponse extends BaseResponse{
+//TODO
 }

@@ -2,7 +2,7 @@ package acync;
 
 public class UserRequest implements BaseRequest {
 
-    private static final String REQ_URL = "http://www.126.com";
+    private static final String REQ_URL = "http://www/126.com";
     
     private String uid;
     private String uname;

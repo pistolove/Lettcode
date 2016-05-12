@@ -8,6 +8,12 @@ import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.web.client.AsyncRestTemplate;
 import acync.ConcreateWapper.Concreate;
 
+/**
+ * 请求http的公共类，通过该类批量传入请求参数和响应类型
+ * 即可异步非阻塞调用获取响应结果
+ * @author liqqc
+ *
+ */
 public class FutureTpDao {
     public AsynClientTemplete asynHttpClient;
 

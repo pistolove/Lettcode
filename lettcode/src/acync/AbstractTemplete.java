@@ -7,6 +7,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.web.client.AsyncRestTemplate;
 
+/**
+ * 抽象的http请求模板类
+ * @author liqqc
+ *
+ */
 public abstract class AbstractTemplete implements Templete{
     public AsyncRestTemplate asyncRestTemplate;
 

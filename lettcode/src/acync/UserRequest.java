@@ -1,5 +1,10 @@
 package acync;
 
+/**
+ * 用户相关请求类
+ * @author liqqc
+ *
+ */
 public class UserRequest implements BaseRequest {
 
     private static final String REQ_URL = "http://www/126.com";

@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 异步调用http请求包装类
+ * @author liqqc
+ *
+ */
 public class ConcreateWapper {
     private List<Concreate> wrapper = new ArrayList<Concreate>();
 

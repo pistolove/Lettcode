@@ -6,6 +6,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.web.client.AsyncRestTemplate;
 
+/**
+ * 具体异步调用请求类
+ * 可以重写其中的方法
+ * @author liqqc
+ *
+ */
 public class AsynClientTemplete extends AbstractTemplete {
 
     public AsynClientTemplete(AsyncRestTemplate template) {

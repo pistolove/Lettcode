@@ -5,7 +5,13 @@ import java.util.concurrent.CountDownLatch;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 
-
+/**
+ * 通用的ListenableFutureCallback实现类
+ * 实现异步回调
+ * @author liqqc
+ *
+ * @param <T>
+ */
 public class CommonListenableCallBack<T> implements ListenableFutureCallback<T> {
     private IEnum type;
     private Map<IEnum, Object> resultValue;

@@ -3,6 +3,13 @@ package acync;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 示例
+ * 示例仅仅是一个样板，无法运行
+ * 需要运行需要提供tomcat获取它运行环境
+ * @author liqqc
+ *
+ */
 public class Demo {
 
     public static void main(String[] args) {

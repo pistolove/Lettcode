@@ -2,7 +2,6 @@ package acync;
 
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 

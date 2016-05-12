@@ -3,11 +3,9 @@ package acync;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
-
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.web.client.AsyncRestTemplate;
-
 import acync.ConcreateWapper.Concreate;
 
 public class FutureTpDao {

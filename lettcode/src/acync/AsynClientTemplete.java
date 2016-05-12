@@ -1,7 +1,6 @@
 package acync;
 
 import java.util.Map;
-
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.concurrent.ListenableFuture;

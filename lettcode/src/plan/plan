@@ -1,0 +1,31 @@
+IO包中的2种设计模式
+集合类 iterator -- collection--set---list          map---abstractmap
+异常机制  throwable-- error 、exception
+JVM内存管理 怎么管理？
+JVM垃圾回收机制 为什么分代？不同代回收机制、策略不通？ 算法也不同？
+设计模式：观察者、代理、策略、装饰者、适配器、门面、抽象工厂、工厂、单例
+concurrent中代码学习 为什么使用线程池？如何使用？ 减少线程创建销毁  redis单线程？
+guava future学习  异步非阻塞调用
+asyncRestTemplate异步批量调用小框架
+自动化API文档结构及思考 用到的技术：IO、模式
+数据结构和算法  七大排序算法、KMP字符串算法、二分查找、栈、队列、树、二叉树、最短路径、动态规划、桶排序
+ObjectMapper反序列化Deserializer 自定义反序列化
+
+NIO学习 为什么使用NIO
+java类加载器结构
+Spring MVC中aop学习
+Spring-mvc包的学习
+linux shell 学习
+protobuf 了解学习
+http协议
+thrift学习 是什么？为什么用？有什么好处？RMI？
+mybatis原理学习
+tomcat、nginx等服务器部署
+mysql数据库知识 优化？分库？分表？
+缓存Memcached原理  消息队列机制了解
+
+
+
+
+
+

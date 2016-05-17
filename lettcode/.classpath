@@ -13,6 +13,12 @@
 	<classpathentry kind="lib" path="lib/jackson-annotations-2.6.4.jar"/>
 	<classpathentry kind="lib" path="lib/jackson-core-2.6.4.jar" sourcepath="lib/jackson-core-2.6.4-sources.jar"/>
 	<classpathentry kind="lib" path="lib/jackson-databind-2.6.4.jar" sourcepath="/Users/liqqc/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.6.4/jackson-databind-2.6.4-sources.jar"/>
+	<classpathentry kind="lib" path="lib/commons-io-2.4.jar"/>
+	<classpathentry kind="lib" path="lib/commons-lang-2.6.jar"/>
+	<classpathentry kind="lib" path="lib/junit-4.8.1.jar"/>
+	<classpathentry kind="lib" path="lib/log4j-1.2.17.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-api-1.6.6.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-log4j12-1.6.6.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

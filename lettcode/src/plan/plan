@@ -1,27 +1,174 @@
-IO包中的2种设计模式
+IO包中的2种设计模式 装饰者模式和适配器
+InputStream--FilterInputStream--BufferedInputSteam
+InputSteam--FileInputStream
+          --byteArrayInputStream
+
 集合类 iterator -- collection--set---list          map---abstractmap
+
+set--hashset 实质是一个hashMap LinkedHashSet 实质是一个linkedHashMap 其key是一个链表
+list--arraylist 实质是一个数组 是有序的 LinkedList 双向链表  vector 线程安全的
+map--hashMap 线程不安全的 LinkedHashMap继承了hashmap 其中的entry是有前驱和后继的
+
+hashtable 线程安全 多线程情况下回导致效率比较低
+
+concurrentHashMap 锁机制----- 允许多个读写操作并发执行
+多线程条件下使用多线程会导致hashMap的put操作死循环，可以使用hashTable但是会出现效率低下，
+使用分段锁技术，将数据分成一段一段的存储，然后每一段加上一把锁，当其中一个线程占用锁访问其中的一个段数据的时候，
+其它段的数据也是可以访问的，实现真正的并发。
+
+concurrentHashMap----多个segMent---每个segMent中包含若干EntrySet
+需要进过3次hash来确定具体的值
+jdk 1.8中进行了修改。
+
+put方法中加了锁机制。
+锁分离机制：使用Segment extends ReentrantLock
+
+
+HashMap的put方法
+首先根据key去hash一次找到该key在数组中的位置，然后根据hash后的值在数组中寻找，如果找到的节点为空就说明没有节点，直接将该节点放入即可，
+如果找到节点，就判断节点是否和新增的节点hash值和equals都相等，如果相等则直接覆盖，如果节点是一个TreeNode则直接放入二叉树中，
+否则，则默认是链表，从链表头往后寻找，如果next节点为空，则将next节点设为当前节点，如果节点数量大于阈值8，则将链表转换为红黑树，
+如果发现遍历的节点和当前节点完全一样，则直接终止寻找。
+更新hash值和key值相同的旧的值。
+最后还需判断是否需要resize，容量增加一倍，需要重新进行hash.
+
+
+
 异常机制  throwable-- error 、exception
+error错误
+exception包括runtimeException和受检查的异常
+
+IOException FileNotFoundException
+
+********
+类加载机制：
+怎么加载类？
+哪些类需要加载？
+加载顺序是什么样的？
+1、寻找jre目录，寻找jvm.dll，并初始化JVM；
+2、产生一个Bootstrap Loader（启动类加载器）；
+3、Bootstrap Loader自动加载Extended Loader（标准扩展类加载器），并将其父Loader设为Bootstrap Loader。
+4、Bootstrap Loader自动加载AppClass Loader（系统类加载器），并将其父Loader设为Extended Loader。
+5、最后由AppClass Loader加载HelloWorld类。
+
+bootstrapLoader-->appLoader-->extLoader
+
+
 JVM内存管理 怎么管理？
+堆:公共区域 存储对象
+栈：线程私有
+本地方法栈：native方法的调用
+程序计数器：线程私有，线程切换回到正确的位置
+方法区：类加载信息 常量 静态变量 编译器编译后的代码
+
 JVM垃圾回收机制 为什么分代？不同代回收机制、策略不通？ 算法也不同？
+哪些需要回收？什么时候回收？怎么回收？
+对象没有引用 未捕获的异常 执行完毕 System.exit() 意外终止
+
+判断对象已经死亡？引用计数但是可能会产生相互引用、是否可达分析
+回收算法：
+标记清除算法
+复制算法
+标记整理
+分代收集
+标记清除
+
+minor gc 年轻代 速度快 执行频率高
+full gc 年老代 速度慢 耗时 
+
+串行垃圾回收：单线程、清理时会停止所有的工作 复制
+并行垃圾回收：多线程 标记整理 标记清除 
+对于年轻代来说，分为Eden和两个Survivor区域，其中比例一般为8：1：1
+对象优先会放在Eden中，如果Eden满了，再来的对象就会放入其中的一个survivor中，
+如果这一个满了的话 就会进行一次minior gc 将存活的对象放入另外一个 survivor中
+然后清除Eden和其中的一个survivor 另一个survivor中对象的年龄加1岁 默认到达
+15岁的时候就会移动到年老区
+对于大的对象可能直接就进入到老年区
+
+年轻代空间不足就会触发full gc ，年老代空间不足就会抛出异常
+Permanet Generation空间满
+Minor GC 后晋升到旧生代的平均大小大于旧生代的剩余空间
+
+将不用的对象设置为null
+使用对象池技术
+使用JVM参数进行调优
+
+年轻代 年老代 持久代
+年轻代朝生夕灭
+
+
+
+
 设计模式：观察者、代理、策略、装饰者、适配器、门面、抽象工厂、工厂、单例
+观察者是一个一对多的关系，通知方发生改变时会通知收听方。
+代理模式目标对象要做的事让代理对象来做，需要实现相同的接口。
+策略模式是有多种不同的算法，依据不同的策略跳转不同的方法中去，比如会员的服务，分为一般用户、普通会员、高级会员等
+装饰者模式是接接受一个相同的高层接口，动态扩展类的功能。
+适配器模式使得不能适配的对象可以变得通用，将一个接口转换为另一个期望的接口，比如FileInputStream接收一个String类型的路径返回.
+门面模式：构建客户端可多个子系统之间的桥接关系，提供一个接口来访问子系统中的一群接口
+
+
+******
 concurrent中代码学习 为什么使用线程池？如何使用？ 减少线程创建销毁  redis单线程？
+线程池使得线程可以重复使用，创建线程和销毁线程是很消耗资源的。
+Executor -->ExecutorService--->AbstractExecutorService-->ThreadPoolExecutor
+Executor:execute()
+ExecutorService:submit()
+AbstractExecutorService:提供默认实现
+ThreadPoolExecutor：具体的线程池
+主要包含：
+BlockingQueue<Runnable> workQueue 工作等待队列
+HashSet<Worker> workers 工作空间 装了线程
+Worker ：AQS需要看下
+
+
+
+
 guava future学习  异步非阻塞调用
 asyncRestTemplate异步批量调用小框架
 自动化API文档结构及思考 用到的技术：IO、模式
+
+********
 数据结构和算法  七大排序算法、KMP字符串算法、二分查找、栈、队列、树、二叉树、最短路径、动态规划、桶排序
+
+
 ObjectMapper反序列化Deserializer 自定义反序列化
 
+
+********
 NIO学习 为什么使用NIO
-java类加载器结构
+
+
+
 Spring MVC中aop学习
+
+
 Spring-mvc包的学习
+
+
 linux shell 学习
+
+
+********
 protobuf 了解学习
+
+
 http协议
+
+
+********
 thrift学习 是什么？为什么用？有什么好处？RMI？
+
+
 mybatis原理学习
+
+
 tomcat、nginx等服务器部署
+
+
 mysql数据库知识 优化？分库？分表？
+
+
 缓存Memcached原理  消息队列机制了解
 
 

@@ -1,0 +1,208 @@
+
+*************************************
+Futures.addCallBack()的内部执行情况：
+
+
+//创建一个单实例的线程 接口需要显著的性能开销 提高性能
+  public static Executor directExecutor() {
+    return DirectExecutor.INSTANCE;
+  }
+
+  /** See {@link #directExecutor} for behavioral notes. */
+  private enum DirectExecutor implements Executor {
+    INSTANCE;
+    @Override public void execute(Runnable command) {
+      command.run();
+    }
+  }
+  
+  
+//增加回调
+  public static <V> void addCallback(final ListenableFuture<V> future,
+      final FutureCallback<? super V> callback, Executor executor) {
+    Preconditions.checkNotNull(callback);
+    //每一个future进来都会创建一个独立的线程运行
+    Runnable callbackListener = new Runnable() {
+      @Override
+      public void run() {
+        final V value;
+        try {
+          // TODO(user): (Before Guava release), validate that this
+          // is the thing for IE.
+          //这里是真正阻塞的地方
+          value = getUninterruptibly(future);
+        } catch (ExecutionException e) {
+          callback.onFailure(e.getCause());
+          return;
+        } catch (RuntimeException e) {
+          callback.onFailure(e);
+          return;
+        } catch (Error e) {
+          callback.onFailure(e);
+          return;
+        }
+        //调用callback的onSuccess方法返回结果
+        callback.onSuccess(value);
+      }
+    };
+    //增加监听
+    future.addListener(callbackListener, executor);
+  }
+  
+  
+  
+  
+  
+      @Override
+    public void addListener(Runnable listener, Executor exec) {
+      executionList.add(listener, exec);
+
+      // When a listener is first added, we run a task that will wait for
+      // the delegate to finish, and when it is done will run the listeners.
+      if (hasListeners.compareAndSet(false, true)) {
+        if (delegate.isDone()) {
+          // If the delegate is already done, run the execution list
+          // immediately on the current thread.
+          executionList.execute();
+          return;
+        }
+
+        adapterExecutor.execute(new Runnable() {
+          @Override
+          public void run() {
+            try {
+              /*
+               * Threads from our private pool are never interrupted. Threads
+               * from a user-supplied executor might be, but... what can we do?
+               * This is another reason to return a proper ListenableFuture
+               * instead of using listenInPoolThread.
+               */
+              getUninterruptibly(delegate);
+            } catch (Error e) {
+              throw e;
+            } catch (Throwable e) {
+              // ExecutionException / CancellationException / RuntimeException
+              // The task is done, run the listeners.
+            }
+
+            //执行链表中的任务
+            executionList.execute();
+          }
+        });
+      }
+    }
+  }
+  
+  
+  //将任务放入ExecutionList中
+    public void add(Runnable runnable, Executor executor) {
+    // Fail fast on a null.  We throw NPE here because the contract of
+    // Executor states that it throws NPE on null listener, so we propagate
+    // that contract up into the add method as well.
+    Preconditions.checkNotNull(runnable, "Runnable was null.");
+    Preconditions.checkNotNull(executor, "Executor was null.");
+
+    // Lock while we check state.  We must maintain the lock while adding the
+    // new pair so that another thread can't run the list out from under us.
+    // We only add to the list if we have not yet started execution.
+    //判断是否执行完成，如果没有执行完成，则放入待执行的链表中
+    synchronized (this) {
+      if (!executed) {
+        runnables = new RunnableExecutorPair(runnable, executor, runnables);
+        return;
+      }
+    }
+    // Execute the runnable immediately. Because of scheduling this may end up
+    // getting called before some of the previously added runnables, but we're
+    // OK with that.  If we want to change the contract to guarantee ordering
+    // among runnables we'd have to modify the logic here to allow it.
+    //执行监听
+    executeListener(runnable, executor);
+  }
+
+
+//链表，存放了任务和执行者
+  private static final class RunnableExecutorPair {
+    final Runnable runnable;
+    final Executor executor;
+    @Nullable RunnableExecutorPair next;
+
+    RunnableExecutorPair(Runnable runnable, Executor executor, RunnableExecutorPair next) {
+      this.runnable = runnable;
+      this.executor = executor;
+      this.next = next;
+    }
+  }
+
+
+
+    public void execute() {
+    // Lock while we update our state so the add method above will finish adding
+    // any listeners before we start to run them.
+    RunnableExecutorPair list;
+    synchronized (this) {
+      if (executed) {
+        return;
+      }
+      executed = true;
+      list = runnables;
+      runnables = null;  // allow GC to free listeners even if this stays around for a while.
+    }
+    // If we succeeded then list holds all the runnables we to execute.  The pairs in the stack are
+    // in the opposite order from how they were added so we need to reverse the list to fulfill our
+    // contract.
+    // This is somewhat annoying, but turns out to be very fast in practice.  Alternatively, we 
+    // could drop the contract on the method that enforces this queue like behavior since depending
+    // on it is likely to be a bug anyway.
+    
+    // N.B. All writes to the list and the next pointers must have happened before the above 
+    // synchronized block, so we can iterate the list without the lock held here.
+    //将链表翻转
+    RunnableExecutorPair reversedList = null;
+    while (list != null) {
+      RunnableExecutorPair tmp = list;
+      list = list.next;
+      tmp.next = reversedList;
+      reversedList = tmp;
+    }
+    
+    //从头开始执行监听任务
+    while (reversedList != null) {
+      executeListener(reversedList.runnable, reversedList.executor);
+      reversedList = reversedList.next;
+    }
+  }
+  
+  
+  //用while阻塞直到获取到结果
+    public static <V> V getUninterruptibly(Future<V> future)
+      throws ExecutionException {
+    boolean interrupted = false;
+    try {
+      while (true) {
+        try {
+          return future.get();
+        } catch (InterruptedException e) {
+          interrupted = true;
+        }
+      }
+    } finally {
+      if (interrupted) {
+        Thread.currentThread().interrupt();
+      }
+    }
+  }
+  
+  
+  //执行监听器，调用execute方法，实际上执行的是runnable的run方法
+    private static void executeListener(Runnable runnable, Executor executor) {
+    try {
+      executor.execute(runnable);
+    } catch (RuntimeException e) {
+      // Log it and keep going, bad runnable and/or executor.  Don't
+      // punish the other runnables if we're given a bad one.  We only
+      // catch RuntimeException because we want Errors to propagate up.
+      log.log(Level.SEVERE, "RuntimeException while executing runnable "
+          + runnable + " with executor " + executor, e);
+    }
+  }

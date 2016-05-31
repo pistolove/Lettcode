@@ -1,4 +1,4 @@
-package acync;
+package acync.guava;
 
 import java.io.Serializable;
 

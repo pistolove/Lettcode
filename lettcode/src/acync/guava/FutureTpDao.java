@@ -1,4 +1,4 @@
-package acync;
+package acync.guava;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,7 +6,8 @@ import java.util.concurrent.CountDownLatch;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.web.client.AsyncRestTemplate;
-import acync.ConcreateWapper.Concreate;
+
+import acync.guava.ConcreateWapper.Concreate;
 
 /**
  * 请求http的公共类，通过该类批量传入请求参数和响应类型

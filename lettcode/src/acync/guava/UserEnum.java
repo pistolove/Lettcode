@@ -1,4 +1,4 @@
-package acync;
+package acync.guava;
 
 /**
  * 用户相关的枚举类

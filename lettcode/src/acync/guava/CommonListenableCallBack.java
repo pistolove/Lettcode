@@ -1,4 +1,4 @@
-package acync;
+package acync.guava;
 
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;

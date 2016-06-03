@@ -133,7 +133,7 @@ Worker ：AQS需要看下**************************
 ******************************
 ThreadPoolExecutor线程池详解：
 
-AtomicInteger是干什么用的，搞并发情况下保证多线程修改数值的正确性。具有自增自减功能。
+AtomicInteger是干什么用的，高并发情况下保证多线程修改数值的正确性。具有自增自减功能。
 并不是因为volatile，是因为unsafe
 
 CAS的语义是“我认为V的值应该为A，如果是，那么将V的值更新为B，否则不修改并告诉V的值实际为多少”，CAS是项 乐观锁 技术，
@@ -233,6 +233,9 @@ ObjectMapper反序列化Deserializer 自定义反序列化
 ********
 NIO学习 为什么使用NIO
 
+缓冲区
+通道
+选择器
 
 
 Spring MVC中aop学习

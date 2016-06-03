@@ -3,8 +3,8 @@ package headfirst.design.proxy;
 public class PorxyObject implements Itraget{
 	private Itraget target;
 	
-	PorxyObject(Itraget tItraget) {
-		this.target = tItraget;
+	PorxyObject() {
+		this.target = new TargetObject();
 	}
 	
 	

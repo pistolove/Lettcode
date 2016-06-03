@@ -1,5 +1,9 @@
 package headfirst.design.adapter;
 
+/**
+ * 将男人进行适配
+ *
+ */
 public class Adapter implements IWomen {
 	private IMen men;
 
@@ -9,17 +13,17 @@ public class Adapter implements IWomen {
 	}
 
 	@Override
-	public void run() {
+	public void womenrun() {
 		men.run();
 	}
 
 	@Override
-	public void sleep() {
+	public void womensleep() {
 		men.sleep();
 	}
 
 	@Override
-	public void creatBaby() {
+	public void womencreatBaby() {
 		men.groupBaby();
 	}
 

@@ -1,9 +1,13 @@
 package headfirst.design.adapter;
 
+/**
+ * 女人相关接口
+ *
+ */
 public interface IWomen {
-	public void run();
+	public void womenrun();
 
-	public void sleep();
+	public void womensleep();
 	
-	public void creatBaby();
+	public void womencreatBaby();
 }

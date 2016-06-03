@@ -1,6 +1,8 @@
 package headfirst.design.adapter;
 
-
+/**
+ * 具体类
+ */
 public class Men implements IMen {
 
 	@Override

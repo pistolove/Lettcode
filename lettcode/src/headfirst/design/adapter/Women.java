@@ -1,21 +1,26 @@
 package headfirst.design.adapter;
 
+/**
+ * 具体类
+ * @author liqqc
+ *
+ */
 public class Women implements IWomen {
 
 	@Override
-	public void run() {
+	public void womenrun() {
 		System.err.println("women run slow");
 
 	}
 
 	@Override
-	public void sleep() {
+	public void womensleep() {
 
 		System.err.println("women need to sleep");
 	}
 
 	@Override
-	public void creatBaby() {
+	public void womencreatBaby() {
 		System.err.println("women can create baby");
 
 	}

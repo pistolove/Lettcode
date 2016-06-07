@@ -230,13 +230,17 @@ asyncRestTemplate异步批量调用小框架
 ObjectMapper反序列化Deserializer 自定义反序列化
 
 
-********
+***********************
 NIO学习 为什么使用NIO
+
+结合netty框架的学习
 
 缓冲区
 通道
 选择器
 
+
+**********************
 
 Spring MVC中aop学习
 

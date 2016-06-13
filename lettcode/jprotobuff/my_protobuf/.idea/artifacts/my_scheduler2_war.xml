@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="my_scheduler2:war">
+    <output-path>$PROJECT_DIR$/../my_scheduler2/target</output-path>
+    <root id="archive" name="quartz-springboot2.war">
+      <element id="artifact" artifact-name="my_scheduler2:war exploded" />
+    </root>
+  </artifact>
+</component>

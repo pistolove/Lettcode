@@ -1,0 +1,19 @@
+//package com.api.login;
+
+//让生成Java代码的包名为该选项值,如果没有指定该选项，Java的包名则为package关键字指定的名称
+option java_package = "com.api.login";
+
+//主要功能是显示的指定生成Java代码的外部类名称。如果没有指定该选项，Java代码的外部类名称为当前文件的文件名部分，同时还要将文件名转换为驼峰格式
+option java_outer_classname = "LoginMessage";
+
+//optimize_for是文件级别的选项,SPEED、CODE_SIZE、LITE_RUNTIME，
+//SPEED: 表示生成的代码运行效率高，但是由此生成的代码编译后会占用更多的空间。
+//CODE_SIZE: 和SPEED恰恰相反，代码运行效率较低，但是由此生成的代码编译后会占用更少的空间，通常用于资源有限的平台，如Mobile。
+//LITE_RUNTIME: 生成的代码执行效率高，同时生成代码编译后的所占用的空间也是非常少。
+option optimize_for = LITE_RUNTIME;
+
+message MyMessage {
+    optional int64 id = 16;
+    optional string passwd = 2;
+    repeated int32 ranks = 3;
+}

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="EntryPointsManager">
+    <entry_points version="2.0" />
+  </component>
+  <component name="FrameworkDetectionExcludesConfiguration">
+    <file type="web" url="file://$PROJECT_DIR$/../mobile_protobuf3" />
+    <file type="web" url="file://$PROJECT_DIR$" />
+    <file type="web" url="file://$PROJECT_DIR$/../mobile_thrift_client2" />
+    <file type="web" url="file://$PROJECT_DIR$/../my_app" />
+    <file type="web" url="file://$PROJECT_DIR$/../my_scheduler" />
+    <file type="web" url="file://$PROJECT_DIR$/../my_scheduler2" />
+  </component>
+  <component name="IdProvider" IDEtalkID="A513AB8DBAC84EB0CF51838B3F82D224" />
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/../mobile_thrift_server/pom.xml" />
+        <option value="$PROJECT_DIR$/../mobile_thrift_client/pom.xml" />
+        <option value="$PROJECT_DIR$/../my_app/pom.xml" />
+        <option value="$PROJECT_DIR$/../mobile_thrift_client2/pom.xml" />
+        <option value="$PROJECT_DIR$/../mobile_protobuf3/pom.xml" />
+        <option value="$PROJECT_DIR$/../my_scheduler/pom.xml" />
+        <option value="$PROJECT_DIR$/../my_scheduler2/pom.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" assert-keyword="true" jdk-15="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
+</project>
+

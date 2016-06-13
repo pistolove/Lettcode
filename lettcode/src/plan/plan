@@ -155,6 +155,19 @@ HashSet<Worker> workers 工作空间 装了待执行的线程 最后运行的是
 Worker ：AQS需要看下
 
 
+------AQS-------
+reentrantlock的优点
+可以添加多个检控条件, 如果使用synchronized,则只能使用一个. 使用 reentrant locks 可以有多个wait()/notify() 队列. 
+[译注:直接多new 几个ReentrantLock就可以了,不同的场景/条件用不同的ReentrantLock ]
+可以控制线程得到锁的顺序,也就是有公平锁(按照进入顺序得到资源),也可以不按照顺就像.synchronized 一样.
+可以查看锁的状态, 锁是否被锁上了.
+可以查看当前有多少线程再等待锁.
+ 
+reentrantlock的缺点
+需要使用import 引入相关的Class
+不能忘记在finally 模块释放锁,这个看起来比synchronized 丑陋
+synchronized可以放在方法的定义里面, 而reentrantlock只能放在块里面. 比较起来, synchronized可以减少嵌套
+
 **********************************************************************************************************************
  public ThreadPoolExecutor(int corePoolSize,
                               int maximumPoolSize,

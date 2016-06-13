@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/../mobile_protobuf3/mobile_protobuf3.iml" filepath="$PROJECT_DIR$/../mobile_protobuf3/mobile_protobuf3.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mobile_protocolbuffer.iml" filepath="$PROJECT_DIR$/mobile_protocolbuffer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../mobile_thrift_client/mobile_thrift_client.iml" filepath="$PROJECT_DIR$/../mobile_thrift_client/mobile_thrift_client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../mobile_thrift_client2/mobile_thrift_client2.iml" filepath="$PROJECT_DIR$/../mobile_thrift_client2/mobile_thrift_client2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../mobile_thrift_server/mobile_thrift_server.iml" filepath="$PROJECT_DIR$/../mobile_thrift_server/mobile_thrift_server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../my_app/my_app.iml" filepath="$PROJECT_DIR$/../my_app/my_app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../my_scheduler/my_scheduler.iml" filepath="$PROJECT_DIR$/../my_scheduler/my_scheduler.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../my_scheduler2/my_scheduler2.iml" filepath="$PROJECT_DIR$/../my_scheduler2/my_scheduler2.iml" />
+    </modules>
+  </component>
+</project>
+

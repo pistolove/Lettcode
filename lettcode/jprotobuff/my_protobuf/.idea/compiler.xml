@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <option name="DEFAULT_COMPILER" value="Javac" />
+    <resourceExtensions />
+    <wildcardResourcePatterns>
+      <entry name="!?*.java" />
+      <entry name="!?*.form" />
+      <entry name="!?*.class" />
+      <entry name="!?*.groovy" />
+      <entry name="!?*.scala" />
+      <entry name="!?*.flex" />
+      <entry name="!?*.kt" />
+      <entry name="!?*.clj" />
+    </wildcardResourcePatterns>
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="false">
+        <processorPath useClasspath="true" />
+      </profile>
+      <profile default="false" name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="mobile_protobuf3" />
+        <module name="mobile_protocolbuffer" />
+        <module name="mobile_thrift_client" />
+        <module name="mobile_thrift_client2" />
+        <module name="mobile_thrift_server" />
+        <module name="my_app" />
+        <module name="my_quartz" />
+        <module name="my_scheduler" />
+        <module name="my_scheduler2" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="mobile_protobuf3" target="1.7" />
+      <module name="mobile_protocolbuffer" target="1.7" />
+      <module name="mobile_thrift_client" target="1.7" />
+      <module name="mobile_thrift_client2" target="1.7" />
+      <module name="mobile_thrift_server" target="1.7" />
+      <module name="my_scheduler" target="1.6" />
+      <module name="my_scheduler2" target="1.6" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
+

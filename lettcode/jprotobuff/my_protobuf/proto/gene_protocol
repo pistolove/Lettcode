@@ -1,0 +1,6 @@
+protoc --java_out=../src/main/java ./MyMessage.proto
+
+
+protoc -I=./proto --java_out=./src/main/java ./proto/hello.proto
+protoc --proto_path=./proto --java_out=./src/main/java ./proto/hello.proto
+

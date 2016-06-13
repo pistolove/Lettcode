@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="mobile_protocolbuffer:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="protocol.war">
+      <element id="artifact" artifact-name="mobile_protocolbuffer:war exploded" />
+    </root>
+  </artifact>
+</component>

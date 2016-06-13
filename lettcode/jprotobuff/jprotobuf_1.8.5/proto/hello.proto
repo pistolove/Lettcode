@@ -1,0 +1,14 @@
+package compare;
+
+message HelloTest{
+    required int32 id = 1;
+    optional string name = 2[default="default"];
+    optional string speak = 3;
+    repeated string phone = 4;
+
+}
+
+message HelloCon{
+    repeated HelloTest hello = 1;
+}
+

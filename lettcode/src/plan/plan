@@ -168,6 +168,9 @@ reentrantlock的缺点
 不能忘记在finally 模块释放锁,这个看起来比synchronized 丑陋
 synchronized可以放在方法的定义里面, 而reentrantlock只能放在块里面. 比较起来, synchronized可以减少嵌套
 
+reentrantlock实质是使用了Sync抽象类，Sync类继承了AQS，Sync是实现类NonfairSync和FairSync类。
+主要是使用reentrantlock的lock方法和unlock方法，reentrantlock初始化会默认创建一个非公平的NonfairSync锁。
+
 **********************************************************************************************************************
  public ThreadPoolExecutor(int corePoolSize,
                               int maximumPoolSize,
@@ -283,8 +286,11 @@ asyncRestTemplate异步批量调用小框架
 
 **********************************************************************************************************************
 ObjectMapper反序列化Deserializer 自定义反序列化
-
-
+ObjectMapper反序列化的思想：
+    JsonDeserializer抽象类是关键，其中不同的类型会分发到对应的JsonDeserializer中进行处理，包括基本类型，集合，字符串等的处理。
+    ObjectMapper的反序列化实质是构建一个游标，从字符串的开始位置往后移动，通过对'{' '[' '"' 的判断跳转到相应的JsonDeserializer中进行处理
+    处理完成后返回结果。
+    
 **********************************************************************************************************************
 NIO学习 为什么使用NIO
 结合netty框架的学习

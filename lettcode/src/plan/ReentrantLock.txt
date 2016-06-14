@@ -1,0 +1,239 @@
+Java代码  收藏代码
+public void lock() {  
+       sync.lock();  
+   }  
+
+
+直接调用的是sync的lock. 
+
+
+Java代码  收藏代码
+public ReentrantLock() {  
+      sync = new NonfairSync();  
+  }  
+
+
+默认是非公平锁,看看NonfairSync的lock方法: 
+
+Java代码  收藏代码
+final void lock() {  
+         if (compareAndSetState(0, 1))  
+             setExclusiveOwnerThread(Thread.currentThread());  
+         else  
+             acquire(1);  
+     }  
+
+
+compareAndSetState(0, 1) 这个是尝试获取锁,把state的状态从0改为1表示取得锁.这个时候设置获取锁的线程就是当前线程. 
+具体调用的是 
+
+
+Java代码  收藏代码
+protected final boolean compareAndSetState(int expect, int update) {  
+       // See below for intrinsics setup to support this  
+       return unsafe.compareAndSwapInt(this, stateOffset, expect, update);  
+   }  
+
+
+unsafe的compareAndSwapInt方法是native的. 
+但是我们更关注的是,申请锁不成功的时候是怎么做的.可以看到是acquire(1); 
+
+Java代码  收藏代码
+public final void acquire(int arg) {  
+       if (!tryAcquire(arg) &&  
+           acquireQueued(addWaiter(Node.EXCLUSIVE), arg))  
+           selfInterrupt();  
+   }  
+
+
+acquire首先调用的是tryAcquire.看看NonfairSync的tryAcquire是怎么样实现的: 
+
+Java代码  收藏代码
+protected final boolean tryAcquire(int acquires) {  
+           return nonfairTryAcquire(acquires);  
+       }  
+
+
+Java代码  收藏代码
+final boolean nonfairTryAcquire(int acquires) {  
+            final Thread current = Thread.currentThread();  
+            int c = getState();  
+            if (c == 0) {  
+                if (compareAndSetState(0, acquires)) {  
+                    setExclusiveOwnerThread(current);  
+                    return true;  
+                }  
+            }  
+            else if (current == getExclusiveOwnerThread()) {  
+                int nextc = c + acquires;  
+                if (nextc < 0) // overflow  
+                    throw new Error("Maximum lock count exceeded");  
+                setState(nextc);  
+                return true;  
+            }  
+            return false;  
+        }  
+
+
+tryAcquire的逻辑是这样的, 
+c = getState() 就是当前没有锁竞争的时候,会再尝试去获得锁. 
+current == getExclusiveOwnerThread()):当前线程已经获取锁了,那么锁的记数加一 
+
+如果tryAcquire没有成功,  就执行acquireQueued(addWaiter(Node.EXCLUSIVE), arg)  
+addWaiter是把线程和线程的状态信息封装到一个node对象,node是个链表. 
+其实就是把当前线程放到一个链表的末尾去.具体怎么放有点讲究,而且用到了无限循环,也就是说,一定要把线程放进链表的. 
+
+Java代码  收藏代码
+private Node addWaiter(Node mode) {  
+        Node node = new Node(Thread.currentThread(), mode);  
+        // Try the fast path of enq; backup to full enq on failure  
+        Node pred = tail;  
+        if (pred != null) {  
+            node.prev = pred;  
+            if (compareAndSetTail(pred, node)) {  
+                pred.next = node;  
+                return node;  
+            }  
+        }  
+        enq(node);  
+        return node;  
+    }  
+
+
+compareAndSetTail 这个方法就是尝试把当前线程放到一个链表的末尾去. 
+如果没有成功,执行enq(node); 
+
+Java代码  收藏代码
+private Node enq(final Node node) {  
+        for (;;) {  
+            Node t = tail;  
+            if (t == null) { // Must initialize  
+                Node h = new Node(); // Dummy header  
+                h.next = node;  
+                node.prev = h;  
+                if (compareAndSetHead(h)) {  
+                    tail = node;  
+                    return h;  
+                }  
+            }  
+            else {  
+                node.prev = t;  
+                if (compareAndSetTail(t, node)) {  
+                    t.next = node;  
+                    return t;  
+                }  
+            }  
+        }  
+    }  
+
+
+for (;;)  这里用到了无限循环. 
+在addWaiter里,放进链表的条件是链表的结尾元素不能为null,在enq方法发现这种情况会创建一个node对象取代之前的链表的结尾元素. 
+
+现在来看acquireQueued方法: 
+
+Java代码  收藏代码
+final boolean acquireQueued(final Node node, int arg) {  
+        try {  
+            boolean interrupted = false;  
+            for (;;) {  
+                final Node p = node.predecessor();  
+                if (p == head && tryAcquire(arg)) {  
+                    setHead(node);  
+                    p.next = null; // help GC  
+                    return interrupted;  
+                }  
+                if (shouldParkAfterFailedAcquire(p, node) &&  
+                    parkAndCheckInterrupt())  
+                    interrupted = true;  
+            }  
+        } catch (RuntimeException ex) {  
+            cancelAcquire(node);  
+            throw ex;  
+        }  
+    }  
+
+acquireQueued也是个无限循环.就是说要么获取到锁,要么中断当前线程. 
+acquireQueued会再次调用tryAcquire,就是再尝试一次获取锁. 
+shouldParkAfterFailedAcquire是判断是否要中断当前线程. 
+
+Java代码  收藏代码
+private static boolean shouldParkAfterFailedAcquire(Node pred, Node node) {  
+        int ws = pred.waitStatus;  
+        if (ws == Node.SIGNAL)  
+            return true;  
+        if (ws > 0) {  
+        do {  
+        node.prev = pred = pred.prev;  
+        } while (pred.waitStatus > 0);  
+        pred.next = node;  
+        } else {  
+            compareAndSetWaitStatus(pred, ws, Node.SIGNAL);  
+        }   
+        return false;  
+    }  
+
+
+shouldParkAfterFailedAcquire返回true的话,当前线程就直接中断了 
+返回false的话,会无限循环再来一次,期间会删除掉废弃的node(pred.waitStatus > 0) 
+会一直尝试把前面的节点的waitStatus设置为SIGNAL,这个其实就是返回true的条件. 
+也就是说会不断尝试直到返回true,然后中断当前线程. 
+
+线程这个时候还没获取锁,但是已经被中断了,这个时候只有等待被唤醒,然后再尝试去或得锁. 
+这个逻辑是可以在unlock中看到的: 
+
+Java代码  收藏代码
+public void unlock() {  
+        sync.release(1);  
+    }  
+  
+ public final boolean release(int arg) {  
+        if (tryRelease(arg)) {  
+            Node h = head;  
+            if (h != null && h.waitStatus != 0)  
+                unparkSuccessor(h);  
+            return true;  
+        }  
+        return false;  
+    }  
+  
+  
+protected final boolean tryRelease(int releases) {  
+            int c = getState() - releases;  
+            if (Thread.currentThread() != getExclusiveOwnerThread())  
+                throw new IllegalMonitorStateException();  
+            boolean free = false;  
+            if (c == 0) {  
+                free = true;  
+                setExclusiveOwnerThread(null);  
+            }  
+            setState(c);  
+            return free;  
+        }  
+
+从tryRelease可以看到释放锁的条件是:c == 0 就是锁的计数为0; 
+unparkSuccessor:释放锁. 
+
+Java代码  收藏代码
+private void unparkSuccessor(Node node) {  
+       int ws = node.waitStatus;  
+       if (ws < 0)  
+           compareAndSetWaitStatus(node, ws, 0);   
+  
+       Node s = node.next;  
+       if (s == null || s.waitStatus > 0) {  
+           s = null;  
+           for (Node t = tail; t != null && t != node; t = t.prev)  
+               if (t.waitStatus <= 0)  
+                   s = t;  
+       }  
+       if (s != null)  
+           LockSupport.unpark(s.thread);  
+   }  
+
+
+LockSupport.unpark(s.thread);  可以看到释放锁的时候会唤醒一个之前链表的一个线程,这样线程的加锁和解锁就串起来了.  这里最终调用的是unsafe.unpark. 
+
+线程等待最终调用的是unsafe.park. 
+线程唤醒最终调用的是unsafe.park. 
+可以看到unsafe才是最终的实现,也可以看到unsafe的方法都是native的. 

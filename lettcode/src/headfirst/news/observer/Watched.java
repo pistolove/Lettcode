@@ -1,11 +1,14 @@
 package headfirst.news.observer;
 
+/**
+ * 被观察者接口
+ */
 public interface Watched {
-    public void addObserver(Watcher o);
+	public void addObserver(Watcher o);
 
-    public abstract void deleteObserver(Watcher o);
+	public void deleteObserver(Watcher o);
 
-    public abstract void notifyObservers();
+	public void notifyObservers();
 
-    public void deleteObservers();
+	public void deleteObservers();
 }

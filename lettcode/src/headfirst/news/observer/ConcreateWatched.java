@@ -2,6 +2,9 @@ package headfirst.news.observer;
 
 import java.util.Vector;
 
+/**
+ * 具体的被观察者
+ */
 public class ConcreateWatched implements Watched {
     private boolean changed = false;
     private Vector<Watcher> obs;

@@ -2,8 +2,7 @@ package leetcode;
 
 public class Reverse_String {
 	public static void main(String[] args) {
-
-		System.err.println(reverse("hello words"));
+		System.err.println(reverseString01("hello words"));
 	}
 
 	public static String reverseString(String s) {
@@ -14,7 +13,7 @@ public class Reverse_String {
 		return buffer.toString();
 	}
 
-	public static String reverse(String s) {
+	public static String reverseString01(String s) {
 		if (s == null)
 			return null;
 		int count = s.length();
@@ -27,14 +26,6 @@ public class Reverse_String {
 			value[j] = ck;
 			value[k] = cj;
 		}
-
-//		for (int i = 0; i < count - 1; i++) {
-//			char c2 = value[i];
-//			char c1 = value[i + 1];
-//			value[i++] = c1;
-//			value[i] = c2;
-//		}
-
 		return new String(value);
 	}
 }

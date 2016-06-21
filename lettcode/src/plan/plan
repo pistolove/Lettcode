@@ -78,6 +78,29 @@ IOException FileNotFoundException
 
 bootstrapLoader-->appLoader-->extLoader
 
+
+类从被加载到虚拟机内存中开始，到卸载出内存为止，它的整个生命周期包括：加载、验证、准备、解析、初始化、使用和卸载七个阶段。
+(a)加载：时类加载过程的第一个阶段，在加载阶段，虚拟机需要完成以下三件事情：
+    1、通过一个类的全限定名来获取其定义的二进制字节流。
+    2、将这个字节流所代表的静态存储结构转化为方法区的运行时数据结构。
+    3、在Java堆中生成一个代表这个类的java.lang.Class对象，作为对方法区中这些数据的访问入口。
+启动类加载器-->扩展类加载器-->应用程序类加载器-->自定义类加载器
+双亲委派模型的工作流程是：如果一个类加载器收到了类加载的请求，它首先不会自己去尝试加载这个类，而是把请求委托给父加载器去完成，依次向上，
+因此，所有的类加载请求最终都应该被传递到顶层的启动类加载器中，只有当父加载器在它的搜索范围中没有找到所需的类时，即无法完成该加载，子加载器才会尝试自己去加载该类。
+(b)验证：的目的是为了确保Class文件中的字节流包含的信息符合当前虚拟机的要求，而且不会危害虚拟机自身的安全。
+不同的虚拟机对类验证的实现可能会有所不同，但大致都会完成以下四个阶段的验证：文件格式的验证、元数据的验证、字节码验证和符号引用验证
+(c)准备：准备阶段是正式为类变量分配内存并设置类变量初始值的阶段，这些内存都将在方法区中分配。对于该阶段有以下几点需要注意：
+    1、这时候进行内存分配的仅包括类变量（static），而不包括实例变量，实例变量会在对象实例化时随着对象一块分配在Java堆中。
+    2、这里所设置的初始值通常情况下是数据类型默认的零值（如0、0L、null、false等），而不是被在Java代码中被显式地赋予的值。
+(d)解析：解析阶段是虚拟机将常量池中的符号引用转化为直接引用的过程。在Class类文件结构一文中已经比较过了符号引用和直接引用的区别和关联，这里不再赘述。
+前面说解析阶段可能开始于初始化之前，也可能在初始化之后开始，虚拟机会根据需要来判断，到底是在类被加载器加载时就对常量池中的符号引用进行解析（初始化之前），还是等到一个符号引用将要被使用前才去解析它（初始化之后）。
+对同一个符号引用进行多次解析请求时很常见的事情，虚拟机实现可能会对第一次解析的结果进行缓存（在运行时常量池中记录直接引用，并把常量标示为已解析状态），从而避免解析动作重复进行。
+(e)初始化：初始化是类加载过程的最后一步，到了此阶段，才真正开始执行类中定义的Java程序代码。在准备阶段，类变量已经被赋过一次系统要求的初始值，而在初始化阶段，
+则是根据程序员通过程序指定的主观计划去初始化类变量和其他资源，或者可以从另一个角度来表达：初始化阶段是执行类构造器<clinit>()方法的过程。
+(f)使用：
+(g)卸载：
+整个类加载过程中，除了在加载阶段用户应用程序可以自定义类加载器参与之外，其余所有的动作完全由虚拟机主导和控制。到了初始化才开始执行类中定义的Java程序代码（亦及字节码）
+，但这里的执行代码只是个开端，它仅限于<clinit>（）方法。类加载过程中主要是将Class文件（准确地讲，应该是类的二进制字节流）加载到虚拟机内存中，真正执行字节码的操作，在加载完成后才真正开始。
 **********************************************************************************************************************
 JVM内存管理 怎么管理？
 堆:公共区域 存储对象
@@ -122,8 +145,6 @@ Minor GC 后晋升到旧生代的平均大小大于旧生代的剩余空间
 年轻代 年老代 持久代
 年轻代朝生夕灭
 
-
-
 **********************************************************************************************************************
 设计模式：观察者、代理、策略、装饰者、适配器、门面、抽象工厂、工厂、单例
 观察者是一个一对多的关系，通知方发生改变时会通知收听方。
@@ -138,8 +159,6 @@ Minor GC 后晋升到旧生代的平均大小大于旧生代的剩余空间
 享元模式：有效地存储大量小对象 Integer.valueOf()
 迭代器模式：对象遍历 Iterator
 Template(模板):定义一个操作中算法的骨架,将一些步骤的执行延迟到其子类中 InputStream中的skip() read()
-
-
 
 **********************************************************************************************************************
 concurrent中代码学习 为什么使用线程池？如何使用？ 减少线程创建销毁  redis单线程？
@@ -162,6 +181,44 @@ reentrantlock的优点
 可以控制线程得到锁的顺序,也就是有公平锁(按照进入顺序得到资源),也可以不按照顺就像.synchronized 一样.
 可以查看锁的状态, 锁是否被锁上了.
 可以查看当前有多少线程再等待锁.
+
+
+1、ReentrantLock可以实现fair lock 
+ 
+public ReentrantLock(boolean fair) {   
+    sync = (fair)? new FairSync() : new NonfairSync();  
+}  
+所谓fair lock就是看获得锁的顺序是不是和申请锁的时间的顺序是一致的 
+ 
+2、ReentrantLock支持中断处理 
+ 
+public final void acquireInterruptibly(int arg) throws InterruptedException {  
+    if (Thread.interrupted())  
+        throw new InterruptedException();  
+    if (!tryAcquire(arg))  
+        doAcquireInterruptibly(arg);  
+}  
+就是说那些持有锁的线程一直不释放，正在等待的线程可以放弃等待。 
+ 
+3、ReentrantLock可以和condition结合使用 
+ 
+public boolean hasWaiters(Condition condition) {  
+    if (condition == null)  
+        throw new NullPointerException();  
+    if (!(condition instanceof AbstractQueuedSynchronizer.ConditionObject))  
+        throw new IllegalArgumentException("not owner");  
+    return sync.hasWaiters((AbstractQueuedSynchronizer.ConditionObject)condition);  
+}  
+ 
+public int getWaitQueueLength(Condition condition) {  
+    if (condition == null)  
+        throw new NullPointerException();  
+    if (!(condition instanceof AbstractQueuedSynchronizer.ConditionObject))  
+        throw new IllegalArgumentException("not owner");  
+    return sync.getWaitQueueLength((AbstractQueuedSynchronizer.ConditionObject)condition);  
+}  
+
+
  
 reentrantlock的缺点
 需要使用import 引入相关的Class
@@ -171,6 +228,17 @@ synchronized可以放在方法的定义里面, 而reentrantlock只能放在块�
 reentrantlock实质是使用了Sync抽象类，Sync类继承了AQS，Sync是实现类NonfairSync和FairSync类。
 主要是使用reentrantlock的lock方法和unlock方法，reentrantlock初始化会默认创建一个非公平的NonfairSync锁。
 
+ReentrantLock在采用非公平锁构造时，首先检查锁状态，如果锁可用，直接通过CAS设置成持有状态，且把当前线程设置为锁的拥有者。
+如果当前锁已经被持有，那么接下来进行可重入检查，如果可重入，需要为锁状态加上请求数。如果不属于上面两种情况，那么说明锁是被其他线程持有，
+当前线程应该放入等待队列。
+
+##原理
+在放入等待队列的过程中，首先要检查队列是否为空队列，如果为空队列，需要创建虚拟的头节点，然后把对当前线程封装的节点加入到队列尾部。
+由于设置尾部节点采用了CAS，为了保证尾节点能够设置成功，这里采用了无限循环的方式，直到设置成功为止。
+在完成放入等待队列任务后，则需要维护节点的状态，以及及时清除处于Cancel状态的节点，以帮助垃圾收集器及时回收。
+如果当前节点之前的节点的等待状态小于1，说明当前节点之前的线程处于等待状态(挂起)，那么当前节点的线程也应处于等待状态(挂起)。
+挂起的工作是由LockSupport类支持的，LockSupport通过JNI调用本地操作系统来完成挂起的任务(java中除了废弃的suspend等方法，没有其他的挂起操作)。
+在当前等待的线程，被唤起后，检查中断状态，如果处于中断状态，那么需要中断当前线程。
 **********************************************************************************************************************
  public ThreadPoolExecutor(int corePoolSize,
                               int maximumPoolSize,
@@ -236,9 +304,9 @@ AbstractFuture 抽象的Future
     // The execution list to hold our executors.
      private final ExecutionList executionList = new ExecutionList();
 ExecutionList
-      private RunnableExecutorPair runnables;
+     private RunnableExecutorPair runnables;
 RunnableExecutorPair
-      final Runnable runnable;
+     final Runnable runnable;
      final Executor executor;
 实质是一个链表，保存了当前执行的任务和线程池。执行时候需要将链表翻转，然后一个一个地执行。
 
@@ -290,7 +358,6 @@ ObjectMapper反序列化的思想：
     JsonDeserializer抽象类是关键，其中不同的类型会分发到对应的JsonDeserializer中进行处理，包括基本类型，集合，字符串等的处理。
     ObjectMapper的反序列化实质是构建一个游标，从字符串的开始位置往后移动，通过对'{' '[' '"' 的判断跳转到相应的JsonDeserializer中进行处理
     处理完成后返回结果。
-    
 **********************************************************************************************************************
 NIO学习 为什么使用NIO
 结合netty框架的学习
@@ -336,6 +403,17 @@ Selector内部原理实际是在做一个对所注册的channel的轮询访问 �
 
 **********************************************************************************************************************
 Spring MVC中aop学习
+
+Spring源代码解析(一）：IOC容器:http://www.iteye.com/topic/86339 
+Spring源代码解析(二)：IoC容器在Web容器中的启动:http://www.iteye.com/topic/86594 
+Spring源代码解析(三）：Spring JDBC:http://www.iteye.com/topic/87034 
+Spring源代码解析(四）：Spring MVC:http://www.iteye.com/topic/87692 
+Spring源代码解析(五）：Spring AOP获取Proxy:http://www.iteye.com/topic/88187 
+Spring源代码解析(六）：Spring声明式事务处理:http://www.iteye.com/topic/88189 
+Spring源代码解析（七）：Spring AOP中对拦截器调用的实现:http://www.iteye.com/topic/107785 
+Spring源代码解析（八）：Spring驱动Hibernate的实现:http://www.iteye.com/topic/110801 
+Spring源代码解析（九）：Spring Acegi框架鉴权的实现:http://www.iteye.com/topic/112979 
+Spring源代码解析（十）：Spring Acegi框架授权的实现:http://www.iteye.com/topic/11343
 
 **********************************************************************************************************************
 Spring-mvc包的学习

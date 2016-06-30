@@ -2,6 +2,26 @@
 *************************************
 Futures.addCallBack()的内部执行情况：
 
+// 模拟调取第三方请求
+// 这里使用的是Spring框架提供的AsyncRestTemplate
+AsyncRestTemplate tp = new AsyncRestTemplate();
+// 发送http请求，获取一个org.springframework.util.concurrent.ListenableFuture对象
+org.springframework.util.concurrent.ListenableFuture<ResponseEntity<Object>> response = tp.getForEntity("http://blog.csdn.net/pistolove", Object.class);
+// 注意：此时的对象是spring中的ListenableFuture，需要将其转化为Guava中的ListenableFuture，用到了JdkFutureAdapters这个适配器类
+ListenableFuture<ResponseEntity<Object>> listenInPoolThread = JdkFutureAdapters.listenInPoolThread(response);
+// 对listenInPoolThread增加监听，并在内部类中进行处理，此处用的是FutureCallback类
+Futures.addCallback(listenInPoolThread, new FutureCallback<Object>() {
+    @Override
+    public void onSuccess(Object result) {
+        System.err.println(result.getClass());
+        System.err.printf("success", result);
+    }
+
+    @Override
+    public void onFailure(Throwable t) {
+        System.out.printf("failure");
+    }
+});
 
 //创建一个单实例的线程 接口需要显著的性能开销 提高性能
   public static Executor directExecutor() {
@@ -234,8 +254,7 @@ Futures.addCallBack()的内部执行情况：
 
   //使用JdkFutureAdaoter适配Spring中的ListenableFuture达到异步调用的结果
     在future.get方法中到底阻塞在什么地方呢？
-
-    通过调试发现最后调用的是BasicFuture中的阻塞方法。
+通过调试发现最后调用的是BasicFuture中的阻塞方法。
 
 
     FutureAdapter:

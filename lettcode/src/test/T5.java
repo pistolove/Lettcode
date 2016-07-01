@@ -4,6 +4,11 @@ import org.junit.Test;
 
 public class T5 {
 
+    @Test
+    public void t1() {
+        System.err.println(1650/24);
+    }
+    
     
     @Test
     public void getCount() {

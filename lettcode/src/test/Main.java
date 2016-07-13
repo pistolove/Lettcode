@@ -13,6 +13,8 @@ public class Main {
 
         String a = null;
         System.err.println();
+        
+        System.err.println(1<<2);
     }
 
     static int num = 0;

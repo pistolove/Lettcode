@@ -4,7 +4,7 @@ import com.baidu.bjf.remoting.protobuf.FieldType;
 import com.baidu.bjf.remoting.protobuf.annotation.Protobuf;
 
 public class TInteger {
-//    @Protobuf(fieldType = FieldType.INT32, required =false, order = 1)
+    @Protobuf(fieldType = FieldType.INT32, required =false, order = 1)
     private Integer age;
 
     @Protobuf(fieldType = FieldType.STRING, required = false, order = 2)

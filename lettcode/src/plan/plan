@@ -589,6 +589,7 @@ nohup java $JVM_OPTS -Dconf.dir=${root_path}/bin/ -cp ${root_path}/lib/*:${root_
 
 
 api-JVM参数
+<<<<<<< Upstream, based on origin/master
 -Xms4g 
 -Xmx4g 
 -Xmn2g  //年轻代大小
@@ -596,6 +597,15 @@ api-JVM参数
 -XX:MaxDirectMemorySize=2048m 
 -XX:PermSize=256m 
 -XX:MaxPermSize=256m 
+=======
+-Xms4g 初始堆大小
+-Xmx4g 最大堆大小
+-Xmn2g 
+-Xss256K 每个线程的堆栈大小
+-XX:MaxDirectMemorySize=2048m  直接内存 直接内存并不是虚拟机运行时数据区的一部分。在NIO中，引入了一种基于通道和缓冲区的I/O方式，它可以使用native函数直接分配堆外内存，然后通过一个存储在java堆中的DirectByteBuffer对象作为这块内存的引用进行操作。
+-XX:PermSize=256m  持久代最大值
+-XX:MaxPermSize=256m  持久代最大值
+>>>>>>> a87d365 update
 -XX:+UseParNewGC 
 -XX:MaxTenuringThreshold=2 
 -XX:SurvivorRatio=8 

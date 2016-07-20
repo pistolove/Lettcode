@@ -23,8 +23,8 @@
 	<classpathentry kind="lib" path="lib/spring-aop-4.2.4.RELEASE.jar"/>
 	<classpathentry kind="lib" path="lib/spring-beans-4.2.4.RELEASE.jar"/>
 	<classpathentry kind="lib" path="lib/spring-core-4.2.4.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/jprotobuf-1.8.5.jar"/>
-	<classpathentry kind="lib" path="lib/protobuf-java-2.5.0.jar"/>
+	<classpathentry kind="lib" path="lib/jprotobuf-1.8.5.jar" sourcepath="/Users/liqqc/.m2/repository/com/baidu/jprotobuf/1.8.5/jprotobuf-1.8.5-sources.jar"/>
+	<classpathentry kind="lib" path="lib/protobuf-java-2.5.0.jar" sourcepath="/Users/liqqc/.m2/repository/com/google/protobuf/protobuf-java/2.5.0/protobuf-java-2.5.0-sources.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

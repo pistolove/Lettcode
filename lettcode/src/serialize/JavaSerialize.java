@@ -28,12 +28,11 @@ public class JavaSerialize {
         friends.add(f1);
         friends.add(f2);
 
+        Long t1 = System.currentTimeMillis();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         ObjectOutputStream obj = new ObjectOutputStream(out);
         obj.writeObject(u);
-        obj.flush();
-        obj.close();
-        System.err.println("java serialize: " + out.toByteArray().length);
+        System.err.println("java serialize: " + out.toByteArray().length + "; " + (System.currentTimeMillis() - t1));
     }
 
 }

@@ -28,7 +28,9 @@ public class JsonSerialize {
         friends.add(f1);
         friends.add(f2);
         
+        Long t1 = System.currentTimeMillis();
         ObjectMapper mapper = new ObjectMapper();
-        System.err.println("json deserialize: " + mapper.writeValueAsBytes(u).length);
+        byte[] writeValueAsBytes = mapper.writeValueAsBytes(u);
+        System.err.println("json deserialize: " + writeValueAsBytes.length + "; " + (System.currentTimeMillis() - t1));
     }
 }

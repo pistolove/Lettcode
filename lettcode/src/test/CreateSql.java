@@ -1,7 +1,10 @@
 package test;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.UUID;
@@ -9,17 +12,19 @@ import java.util.UUID;
 public class CreateSql {
 
     public static void main(String[] args) throws IOException {
-        getMmsMessageSQL("/Users/liqqc/Desktop/white.txt", 104);
+        getMmsMessageSQL("/Users/liqqc/Desktop/vid.txt", 104);
         System.err.println();
         System.err.println();
         System.err.println();
-        getBroadcastWhiteListSQL("/Users/liqqc/Desktop/white.txt", 2);
+//        getBroadcastWhiteListSQL("/Users/liqqc/Desktop/white.txt", 2);
     }
 
     public static void getMmsMessageSQL(String path, Integer actionType) {
         BufferedReader reader = null;
+        BufferedWriter writer = null;
         try {
             reader = new BufferedReader(new InputStreamReader(new FileInputStream(path)));
+            writer = new BufferedWriter(new FileWriter(new File("/Users/liqqc/Desktop/mms.txt")));
             StringBuffer buffer = null;
             String temp = "";
             while ((temp = reader.readLine()) != null) {
@@ -30,6 +35,8 @@ public class CreateSql {
                 buffer.append(", " + temp);
                 buffer.append(", " + actionType);
                 buffer.append(", 0, 0, 1);");
+                writer.write(buffer.toString());
+                writer.newLine();
                 System.err.println(buffer.toString());
             }
         } catch (Exception e) {
@@ -38,6 +45,15 @@ public class CreateSql {
             if (reader != null) {
                 try {
                     reader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            
+            if (writer != null) {
+                try {
+                    writer.flush();
+                    writer.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

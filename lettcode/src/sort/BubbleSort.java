@@ -10,17 +10,17 @@ public class BubbleSort {
         int[] arr_100000 = getArr(100000);
         bubbleSort(arr_100000);
 
-        int[] arr_1000000 = getArr(1000000);
-        bubbleSort(arr_1000000);
-
-        int[] arr_10000000 = getArr(10000000);
-        bubbleSort(arr_10000000);
-
-        int[] arr_100000000 = getArr(100000000);
-        bubbleSort(arr_100000000);
-
-        int[] arr_200000000 = getArr(200000000);
-        bubbleSort(arr_200000000);
+//        int[] arr_1000000 = getArr(1000000);
+//        bubbleSort(arr_1000000);
+//
+//        int[] arr_10000000 = getArr(10000000);
+//        bubbleSort(arr_10000000);
+//
+//        int[] arr_100000000 = getArr(100000000);
+//        bubbleSort(arr_100000000);
+//
+//        int[] arr_200000000 = getArr(200000000);
+//        bubbleSort(arr_200000000);
     }
 
     public static int[] getArr(int len) {

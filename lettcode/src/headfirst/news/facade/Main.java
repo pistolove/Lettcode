@@ -1,4 +1,4 @@
-package headfirst.news.acade;
+package headfirst.news.facade;
 
 public class Main {
 

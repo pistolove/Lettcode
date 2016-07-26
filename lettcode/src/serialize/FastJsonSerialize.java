@@ -1,13 +1,19 @@
 package serialize;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JavaSerialize {
-    public static void start() throws IOException {
+import com.alibaba.fastjson.JSON;
+
+public class FastJsonSerialize {
+
+    
+    
+    public static void main(String[] args) {
+        start();
+    }
+    
+    public static void start(){
         User u = new User();
         List<User> friends = new ArrayList<>();
         u.setUserName("张三");
@@ -27,12 +33,14 @@ public class JavaSerialize {
 
         friends.add(f1);
         friends.add(f2);
-
+        
+        //序列化  
         Long t1 = System.currentTimeMillis();
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        ObjectOutputStream obj = new ObjectOutputStream(out);
-        obj.writeObject(u);
-        System.out.println("java serialize: " +(System.currentTimeMillis() - t1) + "ms;总大小：" + out.toByteArray().length );
+        String text = JSON.toJSONString(friends);  
+        System.out.println("fastJson serialize: " +(System.currentTimeMillis() - t1) + "ms; 总大小：" + text.getBytes().length);
+        
+        //反序列化  
+//        User ins1 = JSON.parseObject(text, User.class);
+        
     }
-
 }

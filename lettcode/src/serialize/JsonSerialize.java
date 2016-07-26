@@ -31,6 +31,6 @@ public class JsonSerialize {
         Long t1 = System.currentTimeMillis();
         ObjectMapper mapper = new ObjectMapper();
         byte[] writeValueAsBytes = mapper.writeValueAsBytes(u);
-        System.err.println("json deserialize: " + writeValueAsBytes.length + "; " + (System.currentTimeMillis() - t1));
+        System.out.println("json deserialize: " + (System.currentTimeMillis() - t1) + "ms;总大小：" + writeValueAsBytes.length);
     }
 }

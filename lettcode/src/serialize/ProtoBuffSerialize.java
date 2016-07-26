@@ -40,7 +40,7 @@ public class ProtoBuffSerialize {
         System.out.println("jprotobuf序列化耗时："+ (etime_jpb_encode-stime_jpb_encode) + "ms;总大小："+bytes.length);
         Long stime_jpb_decode = System.currentTimeMillis();
         User2 studentdecode = studentClassCodec.decode(bytes);
-        System.out.println(studentdecode);
+//        System.out.println(studentdecode);
         Long etime_jpb_decode = System.currentTimeMillis();
         System.out.println("jprotobuf反序列化耗时："+ (etime_jpb_decode-stime_jpb_decode) + "ms");
     }

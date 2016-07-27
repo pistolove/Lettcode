@@ -35,14 +35,16 @@ public class ProtoBuffSerialize {
         friends.add(f2);
 
         Long stime_jpb_encode = System.currentTimeMillis();
-        byte[] bytes = studentClassCodec.encode(u2);
-        Long etime_jpb_encode = System.currentTimeMillis();
-        System.out.println("jprotobuf序列化耗时："+ (etime_jpb_encode-stime_jpb_encode) + "ms;总大小："+bytes.length);
+        byte[] bytes = null;
+        for(int i = 0; i<10; i++) {
+            bytes = studentClassCodec.encode(u2);
+        }
+        System.out.println("jprotobuf序列化耗时：" + (System.currentTimeMillis() - stime_jpb_encode) + "ms;总大小：" + bytes.length);
+        
         Long stime_jpb_decode = System.currentTimeMillis();
         User2 studentdecode = studentClassCodec.decode(bytes);
-//        System.out.println(studentdecode);
         Long etime_jpb_decode = System.currentTimeMillis();
-        System.out.println("jprotobuf反序列化耗时："+ (etime_jpb_decode-stime_jpb_decode) + "ms");
+        System.err.println("jprotobuf反序列化耗时："+ (etime_jpb_decode-stime_jpb_decode) + "ms");
     }
     
 }

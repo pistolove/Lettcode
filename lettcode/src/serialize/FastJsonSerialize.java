@@ -36,11 +36,14 @@ public class FastJsonSerialize {
         
         //序列化  
         Long t1 = System.currentTimeMillis();
-        String text = JSON.toJSONString(friends);  
+        String text = null;
+        for(int i = 0; i<10; i++) {
+            text = JSON.toJSONString(u); 
+        }
         System.out.println("fastJson serialize: " +(System.currentTimeMillis() - t1) + "ms; 总大小：" + text.getBytes().length);
-        
         //反序列化  
-//        User ins1 = JSON.parseObject(text, User.class);
-        
+        Long t2 = System.currentTimeMillis();
+        User ins1 = JSON.parseObject(text, User.class);
+        System.err.println("fastJson serialize: " + (System.currentTimeMillis() -t2) + "ms");
     }
 }

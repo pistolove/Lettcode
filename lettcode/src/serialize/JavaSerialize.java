@@ -1,13 +1,16 @@
 package serialize;
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 public class JavaSerialize {
-    public static void start() throws IOException {
+    
+    public static void start() throws IOException, ClassNotFoundException {
         User u = new User();
         List<User> friends = new ArrayList<>();
         u.setUserName("张三");
@@ -31,8 +34,16 @@ public class JavaSerialize {
         Long t1 = System.currentTimeMillis();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         ObjectOutputStream obj = new ObjectOutputStream(out);
-        obj.writeObject(u);
+        for(int i = 0; i<10; i++) {
+            obj.writeObject(u);
+        }
         System.out.println("java serialize: " +(System.currentTimeMillis() - t1) + "ms;总大小：" + out.toByteArray().length );
+        
+        
+        Long t2 = System.currentTimeMillis();
+        ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(new java.io.ByteArrayInputStream(out.toByteArray())));
+        User us = (User) ois.readObject();
+        System.err.println("java deserialize: " + (System.currentTimeMillis() - t2) + "ms");
     }
 
 }

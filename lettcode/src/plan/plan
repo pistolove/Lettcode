@@ -596,38 +596,28 @@ nohup java $JVM_OPTS -Dconf.dir=${root_path}/bin/ -cp ${root_path}/lib/*:${root_
 
 
 api-JVM参数
-<<<<<<< Upstream, based on origin/master
--Xms4g 
--Xmx4g 
--Xmn2g  //年轻代大小
--Xss256K  //每个线程堆栈大小
--XX:MaxDirectMemorySize=2048m 
--XX:PermSize=256m 
--XX:MaxPermSize=256m 
-=======
 -Xms4g 初始堆大小
 -Xmx4g 最大堆大小
--Xmn2g 
+-Xmn2g 年轻代大小
 -Xss256K 每个线程的堆栈大小
 -XX:MaxDirectMemorySize=2048m  直接内存 直接内存并不是虚拟机运行时数据区的一部分。在NIO中，引入了一种基于通道和缓冲区的I/O方式，它可以使用native函数直接分配堆外内存，然后通过一个存储在java堆中的DirectByteBuffer对象作为这块内存的引用进行操作。
 -XX:PermSize=256m  持久代最大值
 -XX:MaxPermSize=256m  持久代最大值
->>>>>>> a87d365 update
--XX:+UseParNewGC 
--XX:MaxTenuringThreshold=2 
--XX:SurvivorRatio=8 
--XX:ParallelGCThreads=24 
+-XX:+UseParNewGC 选择垃圾收集器为并行收集
+-XX:MaxTenuringThreshold=2 设置垃圾的最大年龄
+-XX:SurvivorRatio=8 设置年轻代中Eden和Survivor的比例
+-XX:ParallelGCThreads=24 设置并行收集的线程数
 -XX:+UnlockDiagnosticVMOptions 
--XX:ParGCCardsPerStrideChunk=32768 
--XX:+UseConcMarkSweepGC 
+-XX:ParGCCardsPerStrideChunk=32768  选项控制GC工作线程的任务粒度
+-XX:+UseConcMarkSweepGC  年老代并发收集
 -XX:-CMSParallelRemarkEnabled 
 -XX:+ParallelRefProcEnabled 
 -XX:+CMSClassUnloadingEnabled 
--XX:CMSInitiatingOccupancyFraction=80 
--XX:+UseCMSInitiatingOccupancyOnly 
--XX:+ExplicitGCInvokesConcurrent 
--Dsun.rmi.dgc.client.gcInterval=14400000 
--Dsun.rmi.dgc.server.gcInterval=14400000 
+-XX:CMSInitiatingOccupancyFraction=80  CMS垃圾回收阈值为80%
+-XX:+UseCMSInitiatingOccupancyOnly  表示只在到达阀值的时候，才进行CMS GC
+-XX:+ExplicitGCInvokesConcurrent  加了这个就不会出现显示调用system.gc()
+-Dsun.rmi.dgc.client.gcInterval=14400000  指定rmi调用时gc的时间间隔
+-Dsun.rmi.dgc.server.gcInterval=14400000  指定rmi调用时gc的时间间隔
 -XX:+AlwaysPreTouch 
 -XX:+PrintGCDetails 
 -XX:+PrintGCTimeStamps 
@@ -659,26 +649,65 @@ api-JVM参数
 
 
 **********************************************************************************************************************
-
 TCP   HTTP   UDP三者的关系:
-
 TCP/IP是个协议组，可分为四个层次：网络接口层、网络层、传输层和应用层。
-
 在网络层有IP协议、ICMP协议、ARP协议、RARP协议和BOOTP协议。
-
 在传输层中有TCP协议与UDP协议。
-
 在应用层有FTP、HTTP、TELNET、SMTP、DNS等协议。
-
 因此，HTTP本身就是一个协议，是从Web服务器传输超文本到本地浏览器的传送协议。
-
 **********************************************************************************************************************
 http中的get、post介绍
 
+一个HTTP报文由3部分组成，分别是:
+　　(1)、起始行(start line)
+　　(2)、首部(header)
+　　(3)、主体(body)
+　　示例：
+HTTP/1.0 200 OK    //起始行
+Content-type:text/plain    //首部
+Content-length:19            //首部  
+Hi I'm a message!    主体
 
 
 
+GET使用URL或Cookie传参。而POST将数据放在BODY中。
+GET的URL会有长度上的限制，则POST的数据则可以非常大。
+POST比GET安全，因为数据在地址栏上不可见。
 
+GET和POST是HTTP的两个常用方法。
+ 
+什么是HTTP?
+超文本传输协议(HyperText Transfer Protocol -- HTTP)是一个设计来使客户端和服务器顺利进行通讯的协议。
+HTTP在客户端和服务器之间以request-response protocol（请求-回复协议）工作。
+ 
+GET - 从指定的服务器中获取数据
+POST - 提交数据给指定的服务器处理
+ 
+GET方法：
+使用GET方法时，查询字符串（键值对）被附加在URL地址后面一起发送到服务器：
+/test/demo_form.jsp?name1=value1&name2=value2
+特点：
+GET请求能够被缓存
+GET请求会保存在浏览器的浏览记录中
+以GET请求的URL能够保存为浏览器书签
+GET请求有长度限制
+GET请求主要用以获取数据
+POST方法：
+使用POST方法时，查询字符串在POST信息中单独存在，和HTTP请求一起发送到服务器：
+POST /test/demo_form.jsp HTTP/1.1
+Host: w3schools.com
+name1=value1&name2=value2
+特点：
+POST请求不能被缓存下来
+POST请求不会保存在浏览器浏览记录中
+以POST请求的URL无法保存为浏览器书签
+POST请求没有长度限制
+
+PUT：向指定资源位置上传其最新内容。 
+DELETE：请求服务器删除Request-URI所标识的资源。 
+TRACE：回显服务器收到的请求，主要用于测试或诊断。 
+CONNECT：HTTP/1.1协议中预留给能够将连接改为管道方式的代理服务器。
+虽然HTTP的请求方式有8种，但是我们在实际应用中常用的也就是get和post，其他请求方式也都可以通过这两种方式间接的来实现。
 **********************************************************************************************************************
 
 
@@ -690,15 +719,27 @@ http中的get、post介绍
 
 
 **********************************************************************************************************************
+阻塞I/O模型：
+        简介：进程会一直阻塞，直到数据拷贝完成
+        
+非阻塞IO模型 
+       简介：非阻塞IO通过进程反复调用IO函数（多次系统调用，并马上返回）；在数据拷贝的过程中，进程是阻塞的；
+
+IO复用模型：
+             简介：主要是select和epoll；对一个IO端口，两次调用，两次返回，比阻塞IO并没有什么优越性；关键是能实现同时对多个IO端口进行监听；
+
+信号驱动IO
+    简介：两次调用，两次返回；
+
+    首先我们允许套接口进行信号驱动I/O,并安装一个信号处理函数，进程继续运行并不阻塞。当数据准备好时，进程会收到一个SIGIO信号，可以在信号处理函数中调用I/O操作函数处理数据。
+
+异步IO模型
+         简介：数据拷贝的时候进程无需阻塞。
+     当一个异步过程调用发出后，调用者不能立刻得到结果。实际处理这个调用的部件在完成后，通过状态、通知和回调来通知调用者的输入输出操作
 
 
-
-
-
-
-
-
-
+阻塞非阻塞的区别在于是否能去干其它的事情
+同步和异步的区别是同步会一直等到指导得到结果，异步不会立马得到结果，一般通过回调、通知等实现
 **********************************************************************************************************************
 
 

@@ -25,13 +25,14 @@ public class NioServer {
         channel.socket().bind(new InetSocketAddress(port));
         this.selector = Selector.open();
         channel.register(selector, SelectionKey.OP_ACCEPT);
+        System.err.println();
     }
 
     public void listener() throws IOException {
         while (true) {
             selector.select();
             Iterator<SelectionKey> iterator = this.selector.selectedKeys().iterator();
-            System.err.println("---" + this.selector.selectedKeys().size());
+            System.err.println("--server--" + this.selector.selectedKeys().size());
             while (iterator.hasNext()) {
                 SelectionKey key = iterator.next();
                 iterator.remove();

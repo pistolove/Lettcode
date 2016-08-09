@@ -1,5 +1,10 @@
 package leetcode;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Given two arrays, write a function to compute their intersection.
  * Example:
@@ -21,24 +26,34 @@ package leetcode;
 public class Intersection_of_Two_Arrays_2 {
 
     public static void main(String[] args) {
-        intersect(new int[]{1,2,3,2},new int[]{2,2});
+        int[] intersect = intersect(new int[]{1},new int[]{1,2});
+        System.err.println(intersect);
+        
     }
 
     public static int[] intersect(int[] nums1, int[] nums2) {
-        if (nums1 == null || nums2 == null)
-            return new int[] {};
+        if(nums1 == null || nums2 ==null || nums1.length==0 || nums2.length==0) return new int[]{};
 
-        int[] ch1 = new int[99999];
-        int[] ch2 = new int[99999];
-        
+        Map<Integer, Integer> map = new HashMap<Integer, Integer>();
         for (int i : nums1) {
-            ch1[i]+=1;
+            if(map.get(i)==null) {
+                map.put(i, 1);
+            }else{
+                map.put(i,map.get(i)+1);
+            }
         }
 
-        for (int j : nums2) {
-            ch2[j]+=1;
+        List<Integer> rt = new ArrayList<>();
+        for (int i : nums2) {
+            if(map.get(i) != null &&  map.get(i) !=0) {
+                rt.add(i);
+                map.put(i, map.get(i)-1);
+            }
         }
-
-        return null;
+        int[] arr = new int[rt.size()];
+        for (int i = 0; i < rt.size(); i++) {
+            arr[i] = rt.get(i);
+        }
+        return arr;
     }
 }
